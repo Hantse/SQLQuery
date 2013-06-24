@@ -12,14 +12,20 @@ namespace SQLQuery
 {
     public class SqlCX
     {
-        private MySqlConnection Cx = null;
-        private SqlCX SqlCxInstance = null; 
+        // MySql Object
+        private static MySqlConnection Cx = null;
+        // Library Object
+        private static SqlCX SqlCxInstance = null; 
+        // String Connection
         private string CxString;
 
+        // Private constructor
         private SqlCX()
         {
+            Cx = new MySqlConnection(CxString);
         }
 
+        // Public getter instance (singleton)
         public SqlCX getInstance(string _CxString = null)
         {
             if (SqlCxInstance == null)
@@ -27,11 +33,12 @@ namespace SQLQuery
                 if (_CxString == null)
                     throw new Exception(MySqlErrorCode.DatabaseAccessDenied.ToString());
                 else
-                    this.SqlCxInstance = new SqlCX();
+                    SqlCxInstance = new SqlCX();
             }
-            return this.SqlCxInstance;
+            return SqlCxInstance;
         }
 
+        // Public connection string setter
         public void setCxString(string _CxString)
         {
             CxString = _CxString;
